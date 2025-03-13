@@ -84,9 +84,10 @@ defmodule Tds.Tls do
 
   # Asserts that the port / socket is still open and returns its `pid`
   defp assert_connected!(socket) do
-    IO.puts("assert connected")
-    {:connected, pid} = Port.info(socket, :connected)
-    pid
+    case Port.info(socket, :connected) do
+      {:connected, pid} -> pid
+      nil -> raise "Port is not connected"
+    end
   end
 
   # SERVER
