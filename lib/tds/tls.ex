@@ -31,6 +31,7 @@ defmodule Tds.Tls do
   end
 
   def controlling_process(socket, tls_conn_pid) do
+    IO.puts("controlling process")
     socket
     |> assert_connected!()
     |> GenServer.call({:controlling_process, tls_conn_pid})
@@ -83,6 +84,7 @@ defmodule Tds.Tls do
 
   # Asserts that the port / socket is still open and returns its `pid`
   defp assert_connected!(socket) do
+    IO.puts("assert connected")
     {:connected, pid} = Port.info(socket, :connected)
     pid
   end
