@@ -38,9 +38,15 @@ defmodule Tds.Tls do
   end
 
   def send(socket, payload) do
-    socket
-    |> assert_connected!()
-    |> GenServer.call({:send, payload})
+    try do
+      socket
+      |> assert_connected!()
+      |> GenServer.call({:send, payload})
+    catch
+      :exit, {:noproc, _} -> {:error, :closed}
+      :exit, {:normal, _} -> {:error, :closed}
+      :exit, reason -> {:error, reason}
+    end
   end
 
   def recv(socket, length, timeout \\ :infinity) do
