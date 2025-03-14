@@ -31,7 +31,6 @@ defmodule Tds.Tls do
   end
 
   def controlling_process(socket, tls_conn_pid) do
-    IO.puts("controlling process")
     socket
     |> assert_connected!()
     |> GenServer.call({:controlling_process, tls_conn_pid})
